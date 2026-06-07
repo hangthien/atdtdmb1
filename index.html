@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Nhóm - Website Tĩnh</title>
+  <title>Nhóm - Website Tĩnh & Bảo Mật Zero Trust</title>
   <link rel="stylesheet" href="styles.css">
   <meta name="description" content="Website tĩnh giới thiệu nhóm và nội dung chính">
 </head>
 <body>
   <header>
-    <h1>Website Nhóm - Bài Tập Triển Khai Web Tĩnh</h1>
-    <p>Trang demo đơn giản bằng HTML/CSS để giới thiệu thành viên và nội dung chính.</p>
+    <h1>Website Nhóm - Bài Tập Triển Khai Web Tĩnh & Bảo Mật Cloud</h1>
+    <p>Trang demo mở rộng: Giới thiệu thành viên, nội dung thực hành và cấu hình kiểm soát truy cập.</p>
   </header>
 
   <main>
+    <!-- KHỐI NỘI DUNG LAB 1 (GIỮ NGUYÊN TỪ BÀI CŨ) -->
     <section>
       <h2>Thành viên nhóm</h2>
       <ul>
@@ -23,13 +24,134 @@
     </section>
 
     <section>
-      <h2>Nội dung chính</h2>
-      <p>Website này trình bày các nội dung sau:</p>
+      <h2>Nội dung chính LAB 1</h2>
+      <p>Website này ban đầu trình bày các nội dung sau:</p>
       <ol>
         <li>Thông tin thành viên nhóm</li>
         <li>Mô tả dự án / bài tập</li>
         <li>Hướng dẫn triển khai lên GitHub &amp; Cloudflare Pages</li>
       </ol>
+    </section>
+
+    <!-- BỔ SUNG KHỐI NỘI DUNG LAB 2 TỪ ĐÂY -->
+    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+
+    <section id="lab2-theory">
+      <h2>LAB 2: Authentication, Authorization & Mô hình Zero Trust</h2>
+      
+      <h3>1. Kiến thức cơ bản liên quan</h3>
+      <ul>
+        <li><strong>Khái niệm Authentication (Xác thực):</strong> Là quá trình kiểm tra và xác minh danh tính của người dùng (Họ là ai?). Hệ thống chứng minh điều này qua việc đăng nhập bằng Google hoặc GitHub.</li>
+        <li><strong>Khái niệm Authorization (Phân quyền):</strong> Là quá trình xác định quyền hạn của người dùng sau khi đã xác thực (Họ được làm gì?). Trong bài này, chính sách (Policy) quyết định email nào được phép xem nội dung website.</li>
+        <li><strong>Vai trò của IAM trong Cloud:</strong> Identity and Access Management đóng vai trò là hệ thống trung tâm quản lý danh tính, cấp quyền tối thiểu cần thiết và giám sát mọi hành vi truy cập tài nguyên đám mây.</li>
+        <li><strong>Nguyên lý Zero Trust:</strong> Dựa trên triết lý cốt lõi <em>"Never Trust, Always Verify"</em> (Không bao giờ tin tưởng, luôn luôn xác thực). Mọi yêu cầu truy cập từ bất kỳ đâu, bất kỳ thiết bị nào đều phải trải qua kiểm tra liên tục thay vì tin tưởng mặc định dựa vào vị trí mạng.</li>
+      </ul>
+    </section>
+
+    <section id="lab2-model">
+      <h3>2. Thiết kế mô hình kiểm soát truy cập (Sơ đồ khối)</h3>
+      <p>Dưới đây là luồng xử lý chi tiết khi người dùng thực hiện gửi yêu cầu truy cập vào trang web thông qua lớp bảo vệ Cloudflare Access / Zero Trust:</p>
+      
+      <div style="background: #f8f9fa; border: 1px solid #ccc; padding: 20px; border-radius: 5px; font-family: monospace; line-height: 1.4; overflow-x: auto;">
+[Trình duyệt / Client] ──(Gửi HTTP/HTTPS Request)──> [Lớp Cloudflare Access / Zero Trust]
+                                                               │
+                                       ┌───────────────────────┴───────────────────────┐
+                                       ▼ (Kiểm tra Cookie Session?)                    ▼
+                                  [Chưa có Session]                               [Đã có Session]
+                                       │                                               │
+                                       ▼                                               ▼
+                        [Khối Xác Thực (Authentication)]                  [Khối Kiểm Tra Quyền (Authorization)]
+                        - Đăng nhập bằng Google/GitHub                                - Đối chiếu thông tin Whitelist Email
+                                       │                                               │
+                      ┌────────────────┴────────────────┐             ┌────────────────┴────────────────┐
+                      ▼ (Thành công)                    ▼ (Thất bại)  ▼ (Thỏa mãn Policy)               ▼ (Không đủ quyền)
+               (Cấp JWT Token)                 [Từ chối truy cập]  [Cho phép vào Website]         [Hiển thị Access Denied]
+                      │                                                        │
+                      └─────────────────> Quay lại ────────────────────────────┘
+                                                                               │
+                                                                               ▼
+                                                                  [Website Cloudflare Pages]
+      </div>
+      <p><em>* Vai trò của Cloudflare Access: Đứng trước website như một Reverse Proxy bảo vệ lớp biên, ngăn chặn hoàn toàn traffic thô và chỉ cho phép chuyển tiếp request khi thỏa mãn tất cả các điều kiện bảo mật.</em></p>
+    </section>
+
+    <section id="lab2-testing">
+      <h3>3. Ghi nhận kết quả kiểm thử hành vi hệ thống</h3>
+      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="width: 30%;">Trường hợp kiểm thử</th>
+            <th>Mô tả hành vi thực tế của hệ thống</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hành vi khi chưa xác thực</strong></td>
+            <td>Khi người dùng truy cập trực tiếp URL trang web tĩnh, hệ thống lập tức chặn lại và tự động chuyển hướng trình duyệt (Redirect) về trang Login trung tâm của Cloudflare Access.</td>
+          </tr>
+          <tr>
+            <td><strong>Hành vi khi xác thực sai / Không đủ quyền</strong></td>
+            <td>Nếu đăng nhập sai thông tin tài khoản Google/GitHub, lỗi hiển thị từ phía Identity Provider. Nếu đăng nhập thành công nhưng email không nằm trong danh sách được cấu hình ở Policy, Cloudflare sẽ hiển thị màn hình báo lỗi <strong>"Access Denied" (Mã 403)</strong>.</td>
+          </tr>
+          <tr>
+            <td><strong>Hành vi khi xác thực đúng</strong></td>
+            <td>Khi đăng nhập bằng tài khoản email hợp lệ, Cloudflare Access sẽ lưu một mã Token mã hóa vào Cookie trình duyệt và chuyển hướng người dùng quay trở lại website, hiển thị toàn bộ nội dung trang web một cách bình thường.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="lab2-risk-analysis">
+      <h3>4. Phân tích an toàn và rủi ro truy cập</h3>
+      
+      <h4>A. Website public hoàn toàn</h4>
+      <ul>
+        <li><strong>Rò rỉ thông tin:</strong> Bất kỳ ai cũng có thể đọc được thông tin cá nhân như MSSV, email của thành viên nhóm, tạo điều kiện cho các cuộc tấn công lừa đảo mục tiêu (Phishing).</li>
+        <li><strong>Nguy cơ tấn công DoS/DDoS:</strong> Thiếu lớp xác thực danh tính ở biên khiến hệ thống dễ bị botnet gửi số lượng lớn request ảo làm cạn kiệt băng thông hoặc tài nguyên lưu trữ đám mây.</li>
+        <li><strong>Web Scraping dữ liệu:</strong> Kẻ xấu dễ dàng dùng công cụ tự động cào toàn bộ nội dung mã nguồn của website để sao chép trái phép hoặc giả mạo trang web.</li>
+      </ul>
+
+      <h4>B. Website có kiểm soát truy cập bằng IAM truyền thống</h4>
+      <ul>
+        <li><strong>Tấn công chiếm đoạt phiên (Session Hijacking):</strong> Hệ thống tin cậy phiên làm việc quá lâu sau khi đăng nhập thành công. Nếu hacker lấy cắp được Session Cookie, họ có thể giả mạo người dùng truy cập thẳng vào hệ thống.</li>
+        <li><strong>Rủi ro từ thiết bị bị chiếm quyền (Compromised Device):</strong> Người dùng hợp lệ nhưng đăng nhập từ một thiết bị đã nhiễm phần mềm độc hại (Keylogger, Trojan). IAM truyền thống chỉ xác thực tài khoản chứ không kiểm tra mức độ an toàn của thiết bị.</li>
+        <li><strong>Tích tụ quyền hạn (Privilege Creep):</strong> Người dùng được cấp quyền truy cập nhưng khi không còn nhu cầu nữa, quản trị viên quên thu hồi, dẫn đến việc dư thừa tài khoản có quyền hạn cao tạo kẽ hở bảo mật.</li>
+      </ul>
+
+      <h4>C. Website có IAM nhưng không áp dụng Zero Trust</h4>
+      <ul>
+        <li><strong>Tấn công dịch chuyển ngang (Lateral Movement):</strong> Mô hình này thường mặc định tin tưởng mạng nội bộ hoặc VPN. Nếu hacker xâm nhập được vào một thiết bị bên trong mạng này, chúng có thể truy cập website mà không cần kiểm tra lại danh tính.</li>
+        <li><strong>Thiếu kiểm tra ngữ cảnh liên tục:</strong> Hệ thống không phát hiện được sự bất thường khi một tài khoản đăng nhập thành công ở hai vị trí địa lý cách xa nhau trong khoảng thời gian quá ngắn (ví dụ: vừa ở Việt Nam, 5 phút sau ở Mỹ).</li>
+        <li><strong>Rủi ro từ bên thứ ba:</strong> Khi cấp quyền cho đối tác ngoài hệ thống, nếu không áp dụng phân đoạn siêu nhỏ (Micro-segmentation) của Zero Trust, tài khoản đối tác có thể xem lén được nhiều vùng dữ liệu không liên quan khác.</li>
+      </ul>
+
+      <h4>D. So sánh mô hình bảo mật</h4>
+      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th>Tiêu chí so sánh</th>
+            <th>Mô hình mạng truyền thống (Castle-and-Moat)</th>
+            <th>Mô hình Zero Trust trong Cloud</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Triết lý cốt lõi</strong></td>
+            <td>Tin tưởng tuyệt đối bất kỳ ai ở bên trong tường lửa (mạng nội bộ/VPN).</td>
+            <td>Không mặc định tin cậy bất kỳ ai. Mọi truy cập đều phải kiểm tra (Never Trust, Always Verify).</td>
+          </tr>
+          <tr>
+            <td><strong>Cơ chế xác thực</strong></td>
+            <td>Xác thực một lần duy nhất tại cửa ngõ perimeter để đi vào hệ thống.</td>
+            <td>Xác thực liên tục theo thời gian thực dựa trên ngữ cảnh cho mỗi yêu cầu truy cập.</td>
+          </tr>
+          <tr>
+            <td><strong>Độ an toàn thiết bị</strong></td>
+            <td>Mặc định thiết bị an toàn nếu nằm trong dải IP nội bộ.</td>
+            <td>Đánh giá nghiêm ngặt trạng thái an toàn của thiết bị trước khi cho phép kết nối tài nguyên.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
@@ -39,7 +161,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2026 Nhóm - Website tĩnh demo</p>
+    <p>&copy; 2026 Nhóm - Website tĩnh demo mở rộng bảo mật Zero Trust</p>
   </footer>
 </body>
 </html>
