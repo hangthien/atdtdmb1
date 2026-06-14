@@ -154,6 +154,102 @@
       </table>
     </section>
 
+    <section id="lab3-security">
+  <h2>LAB 3: OWASP Juice Shop và Bảo mật ứng dụng Web</h2>
+
+  <h3>1. Kiến thức cơ bản</h3>
+  <p>
+    HTTPS là giao thức truyền tải siêu văn bản an toàn, sử dụng TLS để mã hóa dữ liệu giữa trình duyệt và máy chủ.
+    HTTP Security Headers giúp tăng cường khả năng bảo vệ ứng dụng web trước các cuộc tấn công như XSS, Clickjacking và Content Injection.
+    OWASP Top 10 là danh sách 10 nhóm lỗ hổng bảo mật phổ biến và nguy hiểm nhất đối với ứng dụng web.
+  </p>
+
+  <h3>2. OWASP Juice Shop</h3>
+  <p>
+    OWASP Juice Shop là ứng dụng web mô phỏng website thương mại điện tử được xây dựng cố ý chứa nhiều lỗ hổng bảo mật
+    nhằm phục vụ việc học tập, nghiên cứu và thực hành kiểm thử an toàn thông tin.
+  </p>
+
+  <h3>3. Các lỗ hổng phát hiện được</h3>
+
+  <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%;">
+    <tr>
+      <th>Lỗ hổng</th>
+      <th>Nhóm OWASP</th>
+      <th>Mức độ ảnh hưởng</th>
+    </tr>
+
+    <tr>
+      <td>SQL Injection</td>
+      <td>A03:2021 - Injection</td>
+      <td>Rất cao</td>
+    </tr>
+
+    <tr>
+      <td>Cross-Site Scripting (XSS)</td>
+      <td>A03:2021 - Injection</td>
+      <td>Cao</td>
+    </tr>
+
+    <tr>
+      <td>Broken Access Control</td>
+      <td>A01:2021 - Broken Access Control</td>
+      <td>Rất cao</td>
+    </tr>
+
+    <tr>
+      <td>Security Misconfiguration</td>
+      <td>A05:2021 - Security Misconfiguration</td>
+      <td>Cao</td>
+    </tr>
+  </table>
+
+  <h3>4. Triển khai OWASP Juice Shop Local</h3>
+
+  <pre>
+docker pull bkimminich/juice-shop
+docker run --rm -p 3000:3000 bkimminich/juice-shop
+  </pre>
+
+  <p>
+    Sau khi triển khai thành công, ứng dụng được truy cập tại địa chỉ:
+    <strong>http://localhost:3000</strong>
+  </p>
+
+  <h3>5. Giải pháp khắc phục</h3>
+
+  <ul>
+    <li>Sử dụng Prepared Statement để chống SQL Injection.</li>
+    <li>Lọc dữ liệu đầu vào và áp dụng Content Security Policy để giảm thiểu XSS.</li>
+    <li>Áp dụng Role-Based Access Control (RBAC).</li>
+    <li>Bổ sung các HTTP Security Headers.</li>
+    <li>Triển khai HTTPS với TLS 1.2 hoặc TLS 1.3.</li>
+  </ul>
+
+  <h3>6. Liên hệ môi trường Cloud</h3>
+
+  <p>
+    Nhóm đánh giá SQL Injection là lỗ hổng nguy hiểm nhất khi triển khai trên Cloud vì có thể dẫn đến
+    rò rỉ dữ liệu người dùng, chiếm quyền quản trị và ảnh hưởng đến toàn bộ hệ thống.
+  </p>
+
+  <p>
+    Các cơ chế bảo vệ như Web Application Firewall (WAF), Security Group, Logging và Monitoring
+    giúp giảm thiểu nguy cơ khai thác nhưng không thể thay thế việc lập trình an toàn.
+  </p>
+
+  <h3>7. Mô hình Defense in Depth</h3>
+
+  <img src="images/defense-in-depth.png"
+       alt="Defense in Depth"
+       style="max-width:100%; border:1px solid #ccc;">
+
+  <p>
+    Mô hình Defense in Depth triển khai nhiều lớp bảo vệ bao gồm Perimeter Security,
+    Network Security, Endpoint Security, Application Security và Data Security nhằm
+    giảm thiểu rủi ro khi một lớp bảo vệ bị vượt qua.
+  </p>
+</section>
     <section>
       <h2>Liên hệ</h2>
       <p>Email liên hệ: <a href="mailto:nhom@example.com">nhom@example.com</a></p>
