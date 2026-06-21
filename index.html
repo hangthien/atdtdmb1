@@ -14,7 +14,6 @@
   </header>
 
   <main>
-    <!-- KHỐI NỘI DUNG LAB 1 (GIỮ NGUYÊN TỪ BÀI CŨ) -->
     <section>
       <h2>Thành viên nhóm</h2>
       <ul>
@@ -33,7 +32,6 @@
       </ol>
     </section>
 
-    <!-- BỔ SUNG KHỐI NỘI DUNG LAB 2 TỪ ĐÂY -->
     <hr style="border: 1px solid #ddd; margin: 40px 0;">
 
     <section id="lab2-theory">
@@ -54,22 +52,22 @@
       
       <div style="background: #f8f9fa; border: 1px solid #ccc; padding: 20px; border-radius: 5px; font-family: monospace; line-height: 1.4; overflow-x: auto;">
 [Trình duyệt / Client] ──(Gửi HTTP/HTTPS Request)──> [Lớp Cloudflare Access / Zero Trust]
-                                                               │
-                                       ┌───────────────────────┴───────────────────────┐
-                                       ▼ (Kiểm tra Cookie Session?)                    ▼
-                                  [Chưa có Session]                               [Đã có Session]
-                                       │                                               │
-                                       ▼                                               ▼
-                        [Khối Xác Thực (Authentication)]                  [Khối Kiểm Tra Quyền (Authorization)]
-                        - Đăng nhập bằng Google/GitHub                                - Đối chiếu thông tin Whitelist Email
-                                       │                                               │
+                                                       │
+                                       ┌───────────────┴───────────────┐
+                                       ▼ (Kiểm tra Cookie Session?)    ▼
+                                  [Chưa có Session]               [Đã có Session]
+                                       │                               │
+                                       ▼                               ▼
+                        [Khối Xác Thực (Authentication)]   [Khối Kiểm Tra Quyền (Authorization)]
+                        - Đăng nhập bằng Google/GitHub     - Đối chiếu thông tin Whitelist Email
+                                       │                               │
                       ┌────────────────┴────────────────┐             ┌────────────────┴────────────────┐
-                      ▼ (Thành công)                    ▼ (Thất bại)  ▼ (Thỏa mãn Policy)               ▼ (Không đủ quyền)
+                      ▼ (Thành công)                    ▼ (Thất bại)  ▼ (Thỏa mãn Policy)                ▼ (Không đủ quyền)
                (Cấp JWT Token)                 [Từ chối truy cập]  [Cho phép vào Website]         [Hiển thị Access Denied]
-                      │                                                        │
-                      └─────────────────> Quay lại ────────────────────────────┘
-                                                                               │
-                                                                               ▼
+                      │                                                │
+                      └─────────────────> Quay lại ────────────────────┘
+                                                                       │
+                                                                       ▼
                                                                   [Website Cloudflare Pages]
       </div>
       <p><em>* Vai trò của Cloudflare Access: Đứng trước website như một Reverse Proxy bảo vệ lớp biên, ngăn chặn hoàn toàn traffic thô và chỉ cho phép chuyển tiếp request khi thỏa mãn tất cả các điều kiện bảo mật.</em></p>
@@ -154,102 +152,164 @@
       </table>
     </section>
 
+    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+
     <section id="lab3-security">
-  <h2>LAB 3: OWASP Juice Shop và Bảo mật ứng dụng Web</h2>
+      <h2>LAB 3: OWASP Juice Shop và Bảo mật ứng dụng Web</h2>
 
-  <h3>1. Kiến thức cơ bản</h3>
-  <p>
-    HTTPS là giao thức truyền tải siêu văn bản an toàn, sử dụng TLS để mã hóa dữ liệu giữa trình duyệt và máy chủ.
-    HTTP Security Headers giúp tăng cường khả năng bảo vệ ứng dụng web trước các cuộc tấn công như XSS, Clickjacking và Content Injection.
-    OWASP Top 10 là danh sách 10 nhóm lỗ hổng bảo mật phổ biến và nguy hiểm nhất đối với ứng dụng web.
-  </p>
+      <h3>1. Kiến thức cơ bản</h3>
+      <p>
+        HTTPS là giao thức truyền tải siêu văn bản an toàn, sử dụng TLS để mã hóa dữ liệu giữa trình duyệt và máy chủ.
+        HTTP Security Headers giúp tăng cường khả năng bảo vệ ứng dụng web trước các cuộc tấn công như XSS, Clickjacking và Content Injection.
+        OWASP Top 10 là danh sách 10 nhóm lỗ hổng bảo mật phổ biến và nguy hiểm nhất đối với ứng dụng web.
+      </p>
 
-  <h3>2. OWASP Juice Shop</h3>
-  <p>
-    OWASP Juice Shop là ứng dụng web mô phỏng website thương mại điện tử được xây dựng cố ý chứa nhiều lỗ hổng bảo mật
-    nhằm phục vụ việc học tập, nghiên cứu và thực hành kiểm thử an toàn thông tin.
-  </p>
+      <h3>2. OWASP Juice Shop</h3>
+      <p>
+        OWASP Juice Shop là ứng dụng web mô phỏng website thương mại điện tử được xây dựng cố ý chứa nhiều lỗ hổng bảo mật nhằm phục vụ việc học tập, nghiên cứu và thực hành kiểm thử an toàn thông tin.
+      </p>
 
-  <h3>3. Các lỗ hổng phát hiện được</h3>
+      <h3>3. Các lỗ hổng phát hiện được</h3>
+      <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%; text-align: left; border-color: #ddd;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th>Lỗ hổng</th>
+            <th>Nhóm OWASP</th>
+            <th>Mức độ ảnh hưởng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SQL Injection</td>
+            <td>A03:2021 - Injection</td>
+            <td>Rất cao</td>
+          </tr>
+          <tr>
+            <td>Cross-Site Scripting (XSS)</td>
+            <td>A03:2021 - Injection</td>
+            <td>Cao</td>
+          </tr>
+          <tr>
+            <td>Broken Access Control</td>
+            <td>A01:2021 - Broken Access Control</td>
+            <td>Rất cao</td>
+          </tr>
+          <tr>
+            <td>Security Misconfiguration</td>
+            <td>A05:2021 - Security Misconfiguration</td>
+            <td>Cao</td>
+          </tr>
+        </tbody>
+      </table>
 
-  <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%;">
-    <tr>
-      <th>Lỗ hổng</th>
-      <th>Nhóm OWASP</th>
-      <th>Mức độ ảnh hưởng</th>
-    </tr>
-
-    <tr>
-      <td>SQL Injection</td>
-      <td>A03:2021 - Injection</td>
-      <td>Rất cao</td>
-    </tr>
-
-    <tr>
-      <td>Cross-Site Scripting (XSS)</td>
-      <td>A03:2021 - Injection</td>
-      <td>Cao</td>
-    </tr>
-
-    <tr>
-      <td>Broken Access Control</td>
-      <td>A01:2021 - Broken Access Control</td>
-      <td>Rất cao</td>
-    </tr>
-
-    <tr>
-      <td>Security Misconfiguration</td>
-      <td>A05:2021 - Security Misconfiguration</td>
-      <td>Cao</td>
-    </tr>
-  </table>
-
-  <h3>4. Triển khai OWASP Juice Shop Local</h3>
-
-  <pre>
+      <h3>4. Triển khai OWASP Juice Shop Local</h3>
+      <pre>
 docker pull bkimminich/juice-shop
 docker run --rm -p 3000:3000 bkimminich/juice-shop
-  </pre>
+      </pre>
+      <p>
+        Sau khi triển khai thành công, ứng dụng được truy cập tại địa chỉ: <strong>http://localhost:3000</strong>
+      </p>
 
-  <p>
-    Sau khi triển khai thành công, ứng dụng được truy cập tại địa chỉ:
-    <strong>http://localhost:3000</strong>
-  </p>
+      <h3>5. Giải pháp khắc phục</h3>
+      <ul>
+        <li>Sử dụng Prepared Statement để chống SQL Injection.</li>
+        <li>Lọc dữ liệu đầu vào và áp dụng Content Security Policy để giảm thiểu XSS.</li>
+        <li>Áp dụng Role-Based Access Control (RBAC).</li>
+        <li>Bổ sung các HTTP Security Headers.</li>
+        <li>Triển khai HTTPS với TLS 1.2 hoặc TLS 1.3.</li>
+      </ul>
 
-  <h3>5. Giải pháp khắc phục</h3>
+      <h3>6. Liên hệ môi trường Cloud</h3>
+      <p>
+        Nhóm đánh giá SQL Injection là lỗ hổng nguy hiểm nhất khi triển khai trên Cloud vì có thể dẫn đến rò rỉ dữ liệu người dùng, chiếm quyền quản trị và ảnh hưởng đến toàn bộ hệ thống.
+      </p>
+      <p>
+        Các cơ chế bảo vệ như Web Application Firewall (WAF), Security Group, Logging và Monitoring giúp giảm thiểu nguy cơ khai thác nhưng không thể thay thế việc lập trình an toàn.
+      </p>
 
-  <ul>
-    <li>Sử dụng Prepared Statement để chống SQL Injection.</li>
-    <li>Lọc dữ liệu đầu vào và áp dụng Content Security Policy để giảm thiểu XSS.</li>
-    <li>Áp dụng Role-Based Access Control (RBAC).</li>
-    <li>Bổ sung các HTTP Security Headers.</li>
-    <li>Triển khai HTTPS với TLS 1.2 hoặc TLS 1.3.</li>
-  </ul>
+      <h3>7. Mô hình Defense in Depth</h3>
+      <img src="images/defense-in-depth.png" alt="Defense in Depth" style="max-width:100%; border:1px solid #ccc;">
+      <p>
+        Mô hình Defense in Depth triển khai nhiều lớp bảo vệ bao gồm Perimeter Security, Network Security, Endpoint Security, Application Security và Data Security nhằm giảm thiểu rủi ro khi một lớp bảo vệ bị vượt qua.
+      </p>
+    </section>
 
-  <h3>6. Liên hệ môi trường Cloud</h3>
+    <hr style="border: 1px solid #ddd; margin: 40px 0;">
 
-  <p>
-    Nhóm đánh giá SQL Injection là lỗ hổng nguy hiểm nhất khi triển khai trên Cloud vì có thể dẫn đến
-    rò rỉ dữ liệu người dùng, chiếm quyền quản trị và ảnh hưởng đến toàn bộ hệ thống.
-  </p>
+    <section id="lab4-monitoring">
+      <h2>LAB 4: Monitoring, Logging và Security Visibility trên Cloud</h2>
 
-  <p>
-    Các cơ chế bảo vệ như Web Application Firewall (WAF), Security Group, Logging và Monitoring
-    giúp giảm thiểu nguy cơ khai thác nhưng không thể thay thế việc lập trình an toàn.
-  </p>
+      <h3>1. Kiến thức cơ bản liên quan</h3>
+      <ul>
+        <li><strong>Monitoring (Giám sát):</strong> Là quá trình thu thập và phân tích liên tục các chỉ số định lượng (metrics) như CPU, bộ nhớ, thời gian phản hồi theo thời gian thực để theo dõi sức khỏe và tính ổn định của hệ thống.</li>
+        <li><strong>Logging (Ghi nhật ký):</strong> Là việc lưu lại chi tiết các sự kiện (events) đã diễn ra tại một thời điểm cố định dưới dạng văn bản (ai làm gì, lỗi ở đâu, IP nào), được ví như "hộp đen" phục vụ điều tra sự cố.</li>
+        <li><strong>Security Visibility (Hiển thị bảo mật):</strong> Là khả năng nhận biết, theo dõi và loại bỏ hoàn toàn các "điểm mù" đối với mọi hoạt động dữ liệu, luồng mạng và cấu hình sai trong môi trường Cloud.</li>
+      </ul>
 
-  <h3>7. Mô hình Defense in Depth</h3>
+      <h3>2. Xác định các đối tượng cần giám sát đối với Ứng dụng Web</h3>
+      <ul>
+        <li><strong>Người dùng truy cập hệ thống:</strong> Giúp nắm bắt lưu lượng (traffic) để tối ưu hệ thống. Nếu không giám sát, hệ thống dễ rơi vào lỗi sập ngầm hoặc không biết ứng dụng bị giảm lượng người dùng.</li>
+        <li><strong>Phiên đăng nhập (Session):</strong> Quản lý số lượng phiên đồng thời và vòng đời của phiên. Tránh nguy cơ cạn kiệt bộ nhớ hệ thống do session ảo hoặc lọt các đợt chiếm đoạt phiên (Session Hijacking).</li>
+        <li><strong>Hoạt động đăng nhập / đăng xuất:</strong> Bảo đảm tính hợp pháp của tài khoản truy cập. Nếu bỏ qua, hacker dễ dàng chiếm tài khoản đặc quyền (Admin) mà quản trị viên không hề hay biết.</li>
+        <li><strong>Các yêu cầu truy cập bất thường:</strong> Phát hiện sớm các đợt quét lỗ hổng, chèn mã độc (SQLi, XSS) hoặc tấn công DDoS. Nếu không giám sát, hệ thống có nguy cơ sập hoàn toàn hoặc mất sạch dữ liệu.</li>
+        <li><strong>Các lỗi phát sinh trong hệ thống:</strong> Giám sát các mã lỗi ứng dụng (500, lỗi DB). Giúp lập trình viên có căn cứ để vá lỗi, tránh việc lỗi tích tụ làm suy giảm nghiêm trọng hiệu năng web.</li>
+      </ul>
 
-  <img src="images/defense-in-depth.png"
-       alt="Defense in Depth"
-       style="max-width:100%; border:1px solid #ccc;">
+      <h3>3. Phân biệt tình huống áp dụng Monitoring và Logging</h3>
+      <ul>
+        <li><strong>Tình huống 1: Phát hiện số lần đăng nhập thất bại tăng đột biến &rarr; Chọn MONITORING.</strong> Vì đây là bài toán nhận diện xu hướng bất thường theo thời gian thực (real-time). Hệ thống đếm tổng số lỗi và kích hoạt cảnh báo lập tức khi vượt ngưỡng.</li>
+        <li><strong>Tình huống 2: Điều tra ai đã truy cập hệ thống vào thời điểm xảy ra sự cố &rarr; Chọn LOGGING.</strong> Vì thông tin điều tra cần độ chi tiết cao của dữ liệu thô dạng văn bản bao gồm: Tên tài khoản, mốc thời gian chính xác và địa chỉ IP kết nối.</li>
+        <li><strong>Tình huống 3: Xác định nguyên nhân gây lỗi hệ thống &rarr; Chọn LOGGING.</strong> Vì Monitoring chỉ báo hệ thống lỗi, còn log ứng dụng (Application Log) mới ghi lại chi tiết vết lỗi (stack trace) ở dòng code cụ thể nào để sửa chữa.</li>
+      </ul>
 
-  <p>
-    Mô hình Defense in Depth triển khai nhiều lớp bảo vệ bao gồm Perimeter Security,
-    Network Security, Endpoint Security, Application Security và Data Security nhằm
-    giảm thiểu rủi ro khi một lớp bảo vệ bị vượt qua.
-  </p>
-</section>
+      <h3>4. Phân tích hành vi bất thường (Giả định trong vòng 10 phút)</h3>
+      <p><em>Dấu hiệu ghi nhận: Request tăng vọt, đăng nhập sai liên tiếp, xuất hiện IP/Vị trí địa lý lạ.</em></p>
+      <ul>
+        <li><strong>Dấu hiệu phát hiện nhờ Monitoring:</strong> Số lượng tổng request tăng cao đột biến và tốc độ tăng trưởng nhanh của số lần đăng nhập thất bại (biểu hiện qua biểu đồ dốc đứng thời gian thực).</li>
+        <li><strong>Dấu hiệu phát hiện nhờ Log:</strong> Địa chỉ IP cụ thể (ví dụ từ một quốc gia lạ) và danh sách chính xác các username đang bị nhắm tới để dò mật khẩu.</li>
+        <li><strong>Nếu hệ thống CHỈ CÓ Monitoring mà KHÔNG CÓ Log:</strong> Hệ thống rơi vào thế "biết bệnh nhưng không biết thuốc". Bạn nhận được cảnh báo web đang bị tấn công phá hoại, nhưng hoàn toàn không biết IP nào để chặn, không biết tài khoản nào bị ảnh hưởng để bảo vệ và hoàn toàn mù tịt trong việc ứng phó.</li>
+      </ul>
+
+      <h3>5. Vai trò của Log trong điều tra sự cố an toàn thông tin Cloud</h3>
+      <ul>
+        <li><strong>Các câu hỏi Log giúp trả lời:</strong> Ai thực hiện (Who)? Hành động gì (What)? Thời gian nào (When)? Trên tài nguyên nào (Where)? Kết quả thành công hay thất bại (Result)?</li>
+        <li><strong>Hậu quả nếu thiếu Log:</strong> Việc tìm nguyên nhân sẽ bế tắc và phải đoán mò. Doanh nghiệp KHÔNG THỂ xác định trách nhiệm pháp lý vì thiếu bằng chứng số (digital evidence) để quy trách nhiệm cho hacker, bên thứ ba hay nội bộ phá hoại.</li>
+        <li><strong>Rủi ro từ Log:</strong> Nếu ghi log quá chi tiết (Over-logging) có thể làm rò rỉ dữ liệu nhạy cảm (mật khẩu, thẻ tín dụng PII) và tốn chi phí lưu trữ lớn. Nếu log không bảo vệ tốt, hacker sẽ sửa hoặc xóa sạch log (Log wiping) để xóa dấu vết tấn công.</li>
+      </ul>
+
+      <h3>6. Triển khai nội dung lên Web Lab - Mô hình trách nhiệm chung (Shared Responsibility)</h3>
+      <p>Khi triển khai giải pháp giám sát an toàn trên Điện toán đám mây, nhóm cần phân định rõ phạm vi theo mô hình phân chia trách nhiệm:</p>
+      
+      <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%; text-align: left; border-color: #ddd;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th>Lớp Giám Sát trên Cloud</th>
+            <th>Phân định trách nhiệm ứng dụng thực tế vào Bài Lab</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hạ tầng & Mạng (Physical / Infrastructure / Network)</strong></td>
+            <td><strong>Nhà cung cấp Cloud quản lý.</strong> Hỗ trợ sẵn các công cụ biên (như Cloudflare Analytics, AWS CloudWatch, VPC Flow Logs) giúp theo dõi phần cứng, mạng và chặn DDoS ở lớp biên.</td>
+          </tr>
+          <tr>
+            <td><strong>Ứng dụng & Dữ liệu (Application & Data)</strong></td>
+            <td><strong>Khách hàng (Sinh viên/Doanh nghiệp) tự chịu trách nhiệm hoàn toàn.</strong> Cloud không thể tự giám sát logic nghiệp vụ nội bộ hoặc dữ liệu đã mã hóa của ứng dụng web. Nhóm phải chủ động lập trình tạo log ứng dụng để theo dõi hành vi chi tiết.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Kết luận về Giai đoạn ứng phó sự cố (Incident Response):</strong></p>
+      <ul>
+        <li><strong>Monitoring</strong> hỗ trợ phát hiện sự cố ở giai đoạn <strong>SỚM</strong> (ngay khi chỉ số hệ thống vừa vượt ngưỡng an toàn).</li>
+        <li><strong>Logging</strong> đóng vai trò cốt lõi trong suốt quá trình <strong>Phản ứng sự cố (Incident Response)</strong> để khoanh vùng tài nguyên bị nhiễm độc, đưa ra chỉ dấu IP để chặn lập tức và hỗ trợ vá lỗ hổng code.</li>
+        <li><strong>Sự khác biệt về thời gian phát hiện:</strong> Phát hiện sớm giúp xử lý trong vài phút, bảo vệ toàn vẹn dữ liệu và uy tín thương hiệu. Phát hiện muộn (sau nhiều ngày) dẫn đến việc hacker lấy sạch dữ liệu, thiệt hại tài chính lớn và có nguy cơ chịu các chế tài xử phạt pháp lý nặng nề.</li>
+      </ul>
+    </section>
+
+    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+    
     <section>
       <h2>Liên hệ</h2>
       <p>Email liên hệ: <a href="mailto:nhom@example.com">nhom@example.com</a></p>
