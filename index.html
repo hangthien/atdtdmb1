@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Nhóm - Website Tĩnh & Bảo Mật Zero Trust</title>
+  <title>Nhóm - Website Tĩnh & Bảo Mật Toàn Diện Cloud</title>
   <link rel="stylesheet" href="styles.css">
   <meta name="description" content="Website tĩnh giới thiệu nhóm và nội dung chính">
 </head>
@@ -89,7 +89,7 @@
           </tr>
           <tr>
             <td><strong>Hành vi khi xác thực sai / Không đủ quyền</strong></td>
-            <td>Nếu đăng nhập sai thông tin tài khoản Google/GitHub, lỗi hiển thị từ phía Identity Provider. Nếu đăng nhập thành công nhưng email không nằm trong danh sách được cấu hình ở Policy, Cloudflare sẽ hiển thị màn hình báo lỗi <strong>"Access Denied" (Mã 403)</strong>.</td>
+            <td>If đăng nhập sai thông tin tài khoản Google/GitHub, lỗi hiển thị từ phía Identity Provider. Nếu đăng nhập thành công nhưng email không nằm trong danh sách được cấu hình ở Policy, Cloudflare sẽ hiển thị màn hình báo lỗi <strong>"Access Denied" (Mã 403)</strong>.</td>
           </tr>
           <tr>
             <td><strong>Hành vi khi xác thực đúng</strong></td>
@@ -308,6 +308,104 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
       </ul>
     </section>
 
+    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+
+    <section id="lab5-incident-response">
+      <h2>LAB 5: Ứng phó sự cố & Tổng hợp kết quả toàn diện học phần</h2>
+
+      <h3>1. Kiến thức cốt lõi về Incident Response (Ứng phó sự cố)</h3>
+      <ul>
+        <li><strong>Khái niệm (Theo Cloudflare & NIST):</strong> Incident Response (IR) là quy trình chuẩn hóa mang tính tổ chức chặt chẽ giúp doanh nghiệp chủ động Chuẩn bị, Phát hiện, Kiểm soát và Khắc phục các sự cố an ninh mạng. Mục tiêu tối thượng của IR là cô lập cuộc tấn công, giảm thiểu rủi ro thất thoát dữ liệu và khôi phục dịch vụ trực tuyến nhanh nhất có thể.</li>
+        <li><strong>Vai trò trong môi trường Cloud:</strong> Do đặc thù của hạ tầng phân tán, IR giúp xác định chính xác vị trí lỗi dựa trên <em>Mô hình trách nhiệm chia sẻ</em>. Đồng thời, Cloud cho phép tự động hóa phản ứng qua API (chặn tự động IP bằng WAF, cách ly ảo máy chủ nhiễm độc) để triệt tiêu đợt tấn công chỉ trong vài giây.</li>
+      </ul>
+
+      <h3>2. Phân tích chu trình Incident Response Lifecycle theo tiêu chuẩn NIST</h3>
+      <p>Quy trình ứng phó sự cố được vận hành khép kín theo mô hình 4 giai đoạn cải tiến liên tục:</p>
+      
+      
+
+[Image of NIST Incident Response Lifecycle]
+
+      
+      <div class="timeline-container" style="margin-top: 15px;">
+        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+          <strong>Giai đoạn 1: Preparation (Chuẩn bị)</strong><br>
+          Cấu hình mã hóa, kích hoạt các HTTP Security Headers bảo vệ Client (Lab 1); Xây dựng chính sách IAM theo nguyên tắc đặc quyền tối thiểu và bật xác thực đa yếu tố MFA (Lab 2).
+        </div>
+        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+          <strong>Giai đoạn 2: Detection & Analysis (Phát hiện & Phân tích)</strong><br>
+          Cấu hình Dashboard giám sát tập trung để nhận diện các Metrics bất thường (CPU 100%, Egress traffic vọt cao) và truy vết tệp nhật ký văn bản để bóc tách dấu hiệu tấn công như chuỗi lệnh SQL Injection độc hại (Lab 4).
+        </div>
+        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+          <strong>Giai đoạn 3: Containment, Eradication & Recovery (Kiểm soát, Đẩy lùi & Khôi phục)</strong><br>
+          Chặn IP của tin tặc ngay tại lớp biên tường lửa WAF; Vá lỗ hổng mã nguồn ứng dụng bằng cách áp dụng <em>Prepared Statement</em> (Lab 3); Khôi phục cơ sở dữ liệu sạch từ bản sao lưu (Backup) để đưa hệ thống hoạt động trở lại.
+        </div>
+        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+          <strong>Giai đoạn 4: Post-Incident Activity (Hoạt động sau sự cố / Rút kinh nghiệm)</strong><br>
+          Họp đánh giá nguyên nhân gốc rễ, rà soát lỗ hổng quy trình phản ứng nhanh và tiến hành cập nhật lại các kịch bản hành động chuẩn (Playbooks) phòng ngừa nguy cơ tái diễn.
+        </div>
+      </div>
+
+      <h3>3. Phân tích sự cố an toàn thông tin giả định</h3>
+      <ul>
+        <li><strong>Dấu hiệu nhận biết sự cố:</strong> Hệ thống Monitoring cảnh báo CPU máy chủ ứng dụng tăng vọt chạm ngưỡng 100%, lưu lượng dữ liệu tải ra ngoài (Egress Traffic) bất thường. Đồng thời hệ thống Logging ghi nhận chuỗi request liên tục chứa lỗi cú pháp truy vấn Database hoặc hàng loạt mã lỗi HTTP 401/403.</li>
+        <li><strong>Phân loại bản chất sự cố:</strong> Đây là chuỗi hành vi tấn công liên kết nguy hiểm. Tin tặc thực hiện **Khai thác lỗ hổng ứng dụng** (lợi dụng lỗi SQL Injection hoặc lỗi phân quyền trong Lab 3) nhằm vượt qua cơ chế kiểm soát, từ đó trích xuất tài băm cơ sở dữ liệu dẫn đến **Lộ tài khoản** hoặc tiến hành phối hợp **Tấn công brute-force** dò quét mật khẩu các tài khoản đặc quyền khi thiếu cơ chế bảo vệ MFA (Lab 2).</li>
+        <li><strong>Tầm quan trọng của Monitoring và Logging:</strong> Nếu không triển khai hai lớp này, doanh nghiệp hoàn toàn **KHÔNG THỂ** phát hiện sự cố chủ động. Hệ thống sẽ rơi vào trạng thái bị động hoàn toàn và chỉ nhận biết khi hậu quả nghiêm trọng đã xảy ra: Tin tặc mã hóa tống tiền dữ liệu (Ransomware), dữ liệu người dùng bị giao dịch trên mạng đen hoặc dịch vụ Cloud bị đình trệ, sập hoàn toàn.</li>
+      </ul>
+
+      <h3>4. Bảng tổng hợp đánh giá kết quả thực hành (Từ Lab 1 đến Lab 5)</h3>
+      <p>Xuyên suốt toàn bộ học phần, nhóm đã áp dụng và chứng minh tính thực tiễn của chiến lược <strong>Bảo vệ chiều sâu (Defense-in-Depth)</strong> qua từng bài Lab:</p>
+      
+      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="width: 15%;">Bài Lab</th>
+            <th style="width: 30%;">Nội dung & Dịch vụ áp dụng</th>
+            <th style="width: 25%;">Vị trí trong tầng bảo mật</th>
+            <th style="width: 30%;">Kết quả đạt được / Đánh giá</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LAB 1</strong></td>
+            <td>Triển khai web tĩnh trên Cloudflare Pages, kiểm thử bằng Mozilla HTTP Observatory.</td>
+            <td>Perimeter Security (Bảo mật biên)</td>
+            <td>Cấu hình thành công HTTP Security Headers, đưa điểm bảo mật website lên mức tuyệt đối (A/A+), chống Clickjacking và XSS cơ bản.</td>
+          </tr>
+          <tr>
+            <td><strong>LAB 2</strong></td>
+            <td>Phân quyền tài khoản thông qua Cloud IAM, cấu hình chính sách Cloudflare Zero Trust.</td>
+            <td>Identity & Access Control (Kiểm soát truy cập)</td>
+            <td>Áp dụng nguyên tắc đặc quyền tối thiểu (Least Privilege), loại bỏ tư duy tin tưởng vị trí mạng truyền thống, bảo vệ tài nguyên lõi.</td>
+          </tr>
+          <tr>
+            <td><strong>LAB 3</strong></td>
+            <td>Nghiên cứu danh mục OWASP Top 10, cấu hình lỗi ứng dụng OWASP Juice Shop bằng Docker.</td>
+            <td>Application & Data Security (Ứng dụng & Dữ liệu)</td>
+            <td>Hiểu sâu bản chất tấn công phá hoại qua SQL Injection. Thành thạo giải pháp lập trình an toàn với <em>Prepared Statement</em>.</td>
+          </tr>
+          <tr>
+            <td><strong>LAB 4</strong></td>
+            <td>Phân tích Metrics và ghi nhật ký sự kiện dạng văn bản dựa trên Cloudflare Analytics.</td>
+            <td>Security Visibility & Auditing (Giám sát toàn diện)</td>
+            <td>Xây dựng thành công khả năng trực quan hóa đồ thị chỉ số và đọc log điều tra vết, loại bỏ mọi điểm mù trong vận hành hệ thống.</td>
+          </tr>
+          <tr>
+            <td><strong>LAB 5</strong></td>
+            <td>Tổng hợp kiến thức toàn chuỗi bảo vệ và giải quyết sự cố theo khung tiêu chuẩn NIST.</td>
+            <td>Incident Response & Recovery (Ứng phó & Phục hồi)</td>
+            <td>Hợp nhất các lớp bảo mật đơn lẻ thành một hệ thống tự thích ứng bền vững, nắm rõ ranh giới Mô hình trách nhiệm chia sẻ trên Cloud.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5. Báo cáo, đánh giá tổng kết học phần</h3>
+      <ul>
+        <li><strong>Về mặt kiến thức:</strong> An toàn thông tin trên môi trường Điện toán đám mây là một chuỗi hành trình liên tục, không phụ thuộc vào bất kỳ một giải pháp đơn lẻ nào. Hệ thống chỉ thực sự an toàn khi chúng ta thiết lập đồng bộ các chốt chặn bổ trợ lẫn nhau: Hạ tầng biên an toàn (Lab 1) &rarr; Con người được định danh đúng thẩm quyền (Lab 2) &rarr; Ứng dụng lập trình sạch (Lab 3) &rarr; Giám sát hiển thị thông tin rõ ràng (Lab 4) &rarr; Sẵn sàng kịch bản phản ứng nhanh (Lab 5).</li>
+        <li><strong>Về mặt phân định trách nhiệm:</strong> Nhà cung cấp dịch vụ Cloud (CSP) chỉ chịu trách nhiệm bảo vệ an toàn <em>CỦA</em> đám mây (hạ tầng mạng vật lý, trung tâm dữ liệu). Trách nhiệm bảo vệ an toàn <em>TRONG</em> đám mây (logic ứng dụng, quản lý tài khoản người dùng, rà soát log dữ liệu nội bộ) thuộc về bên vận hành là doanh nghiệp hoặc cá nhân chúng ta.</li>
+        <li><strong>Hướng phát triển tiếp theo:</strong> Để đáp ứng xu hướng bảo mật hiện đại, cần tiếp tục đẩy mạnh mô hình tự động hóa an ninh bằng cách đưa kiểm thử bảo mật vào quy trình phát triển phần mềm tự động (DevSecOps) và ứng dụng Trí tuệ nhân tạo (AI/Machine Learning) nhằm phân tích mã độc và log tự động theo thời gian thực.</li>
+      </ul>
+    </section>
     <hr style="border: 1px solid #ddd; margin: 40px 0;">
     
     <section>
