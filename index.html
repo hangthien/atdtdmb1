@@ -4,54 +4,312 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Nhóm - Website Tĩnh & Bảo Mật Toàn Diện Cloud</title>
-  <link rel="stylesheet" href="styles.css">
-  <meta name="description" content="Website tĩnh giới thiệu nhóm và nội dung chính">
+  <style>
+    /* --- CSS Reset & Biến Hệ Thống --- */
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #151d30;
+      --text-color: #e2e8f0;
+      --text-muted: #94a3b8;
+      --primary: #00f2fe;
+      --secondary: #4facfe;
+      --accent: #10b981;
+      --border-color: #24324f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    /* --- Giao diện Layout chung --- */
+    header {
+      background: linear-gradient(135deg, #090d16 0%, #111827 100%);
+      padding: 60px 20px;
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+      margin-bottom: 15px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: #fff;
+      margin: 25px 0 15px 0;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      color: var(--secondary);
+      margin: 15px 0 10px 0;
+    }
+
+    /* --- Danh sách & Điểm nhấn --- */
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+
+    li strong {
+      color: var(--primary);
+    }
+
+    /* --- Thành viên nhóm --- */
+    .team-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .team-list li {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--border-color);
+      padding: 15px 20px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .team-list li span:first-child {
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .team-list li span:last-child {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    /* --- Bảng biểu (Tables) --- */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      background-color: rgba(9, 13, 22, 0.6);
+    }
+
+    th {
+      background-color: #0f172a;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 0.95rem;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    /* --- Code & Sơ đồ --- */
+    pre {
+      background: #090d16;
+      border: 1px solid var(--border-color);
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+      font-size: 0.9rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    .diagram-container {
+      background: #090d16;
+      border: 1px solid var(--primary);
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      color: #a7f3d0;
+      white-space: pre;
+    }
+
+    /* --- Kịch bản Timeline --- */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .timeline-item {
+      background: rgba(79, 172, 254, 0.05);
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary);
+    }
+
+    .timeline-item strong {
+      color: #fff;
+      font-size: 1.05rem;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      background-color: #090d16;
+    }
+
+    footer p {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--secondary);
+      text-decoration: underline;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background: var(--border-color);
+      margin: 50px 0;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>Website Nhóm - Bài Tập Triển Khai Web Tĩnh & Bảo Mật Cloud</h1>
-    <p>Trang demo mở rộng: Giới thiệu thành viên, nội dung thực hành và cấu hình kiểm soát truy cập.</p>
+    <p>Trang demo mở rộng: Giới thiệu thành viên, nội dung thực hành và cấu hình kiểm soát truy cập dựa trên mô hình Zero Trust.</p>
   </header>
 
   <main>
     <section>
       <h2>Thành viên nhóm</h2>
-      <ul>
-        <li>Hàng Lê Trung Thiện - 22004096</li>
-        <li>Phạm Trần Ngọc Hân - 22004100</li>
+      <ul class="team-list">
+        <li>
+          <span>Hàng Lê Trung Thiện</span>
+          <span>MSSV: 22004096</span>
+        </li>
+        <li>
+          <span>Phạm Trần Ngọc Hân</span>
+          <span>MSSV: 22004100</span>
+        </li>
       </ul>
     </section>
 
     <section>
       <h2>Nội dung chính LAB 1</h2>
-      <p>Website này ban đầu trình bày các nội dung sau:</p>
-      <ol>
-        <li>Thông tin thành viên nhóm</li>
-        <li>Mô tả dự án / bài tập</li>
-        <li>Hướng dẫn triển khai lên GitHub &amp; Cloudflare Pages</li>
+      <p style="margin-bottom: 15px;">Website này ban đầu trình bày các nội dung nền tảng bao gồm:</p>
+      <ol style="padding-left: 25px;">
+        <li>Thông tin thành viên nhóm và phân định vai trò thực hành.</li>
+        <li>Mô tả chi tiết yêu cầu tổng quan của dự án / bài tập thực hành tuần 1.</li>
+        <li>Hướng dẫn cấu hình CI/CD và kết nối mã nguồn từ GitHub sang Cloudflare Pages.</li>
       </ol>
     </section>
 
-    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+    <hr>
 
     <section id="lab2-theory">
       <h2>LAB 2: Authentication, Authorization & Mô hình Zero Trust</h2>
       
       <h3>1. Kiến thức cơ bản liên quan</h3>
       <ul>
-        <li><strong>Khái niệm Authentication (Xác thực):</strong> Là quá trình kiểm tra và xác minh danh tính của người dùng (Họ là ai?). Hệ thống chứng minh điều này qua việc đăng nhập bằng Google hoặc GitHub.</li>
-        <li><strong>Khái niệm Authorization (Phân quyền):</strong> Là quá trình xác định quyền hạn của người dùng sau khi đã xác thực (Họ được làm gì?). Trong bài này, chính sách (Policy) quyết định email nào được phép xem nội dung website.</li>
-        <li><strong>Vai trò của IAM trong Cloud:</strong> Identity and Access Management đóng vai trò là hệ thống trung tâm quản lý danh tính, cấp quyền tối thiểu cần thiết và giám sát mọi hành vi truy cập tài nguyên đám mây.</li>
-        <li><strong>Nguyên lý Zero Trust:</strong> Dựa trên triết lý cốt lõi <em>"Never Trust, Always Verify"</em> (Không bao giờ tin tưởng, luôn luôn xác thực). Mọi yêu cầu truy cập từ bất kỳ đâu, bất kỳ thiết bị nào đều phải trải qua kiểm tra liên tục thay vì tin tưởng mặc định dựa vào vị trí mạng.</li>
+        <li><strong>Khái niệm Authentication (Xác thực):</strong> Là quá trình kiểm tra và xác minh danh tính của người dùng (Họ là ai?). Hệ thống chứng minh điều này qua việc tích hợp đăng nhập tập trung bằng Google hoặc GitHub.</li>
+        <li><strong>Khái niệm Authorization (Phân quyền):</strong> Là quá trình xác định quyền hạn của người dùng sau khi đã xác thực thành công (Họ được phép làm gì?). Trong bài này, chính sách (Policy) quyết định email nào được cấp quyền xem nội dung website.</li>
+        <li><strong>Vai trò của IAM trong Cloud:</strong> Identity and Access Management đóng vai trò là hệ thống trung tâm quản lý danh tính, thực thi nguyên tắc cấp quyền tối thiểu cần thiết (Least Privilege) và giám sát mọi hành vi truy cập tài nguyên đám mây.</li>
+        <li><strong>Nguyên lý Zero Trust:</strong> Dựa trên triết lý cốt lõi <em>"Never Trust, Always Verify"</em> (Không bao giờ tin tưởng, luôn luôn xác thực). Mọi yêu cầu truy cập từ bất kỳ đâu, trên bất kỳ thiết bị nào đều phải trải qua kiểm tra liên tục dựa trên ngữ cảnh thay vì tin tưởng mặc định dựa vào vị trí mạng.</li>
       </ul>
-    </section>
 
-    <section id="lab2-model">
       <h3>2. Thiết kế mô hình kiểm soát truy cập (Sơ đồ khối)</h3>
-      <p>Dưới đây là luồng xử lý chi tiết khi người dùng thực hiện gửi yêu cầu truy cập vào trang web thông qua lớp bảo vệ Cloudflare Access / Zero Trust:</p>
+      <p style="margin-bottom: 15px;">Dưới đây là luồng xử lý chi tiết khi người dùng gửi yêu cầu truy cập vào trang web thông qua lớp bảo vệ Cloudflare Access / Zero Trust:</p>
       
-      <div style="background: #f8f9fa; border: 1px solid #ccc; padding: 20px; border-radius: 5px; font-family: monospace; line-height: 1.4; overflow-x: auto;">
-[Trình duyệt / Client] ──(Gửi HTTP/HTTPS Request)──> [Lớp Cloudflare Access / Zero Trust]
+      <div class="diagram-container">[Trình duyệt / Client] ──(Gửi HTTP/HTTPS Request)──> [Lớp Cloudflare Access / Zero Trust]
                                                        │
                                        ┌───────────────┴───────────────┐
                                        ▼ (Kiểm tra Cookie Session?)    ▼
@@ -68,38 +326,37 @@
                       └─────────────────> Quay lại ────────────────────┘
                                                                        │
                                                                        ▼
-                                                                  [Website Cloudflare Pages]
-      </div>
-      <p><em>* Vai trò của Cloudflare Access: Đứng trước website như một Reverse Proxy bảo vệ lớp biên, ngăn chặn hoàn toàn traffic thô và chỉ cho phép chuyển tiếp request khi thỏa mãn tất cả các điều kiện bảo mật.</em></p>
-    </section>
+                                                                  [Website Cloudflare Pages]</div>
+      <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+        <em>* Vai trò của Cloudflare Access: Đứng trước website như một Reverse Proxy bảo vệ lớp biên, ngăn chặn hoàn toàn traffic thô và chỉ cho phép chuyển tiếp request khi thỏa mãn tất cả các điều kiện bảo mật.</em>
+      </p>
 
-    <section id="lab2-testing">
       <h3>3. Ghi nhận kết quả kiểm thử hành vi hệ thống</h3>
-      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th style="width: 30%;">Trường hợp kiểm thử</th>
-            <th>Mô tả hành vi thực tế của hệ thống</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Hành vi khi chưa xác thực</strong></td>
-            <td>Khi người dùng truy cập trực tiếp URL trang web tĩnh, hệ thống lập tức chặn lại và tự động chuyển hướng trình duyệt (Redirect) về trang Login trung tâm của Cloudflare Access.</td>
-          </tr>
-          <tr>
-            <td><strong>Hành vi khi xác thực sai / Không đủ quyền</strong></td>
-            <td>If đăng nhập sai thông tin tài khoản Google/GitHub, lỗi hiển thị từ phía Identity Provider. Nếu đăng nhập thành công nhưng email không nằm trong danh sách được cấu hình ở Policy, Cloudflare sẽ hiển thị màn hình báo lỗi <strong>"Access Denied" (Mã 403)</strong>.</td>
-          </tr>
-          <tr>
-            <td><strong>Hành vi khi xác thực đúng</strong></td>
-            <td>Khi đăng nhập bằng tài khoản email hợp lệ, Cloudflare Access sẽ lưu một mã Token mã hóa vào Cookie trình duyệt và chuyển hướng người dùng quay trở lại website, hiển thị toàn bộ nội dung trang web một cách bình thường.</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 30%;">Trường hợp kiểm thử</th>
+              <th>Mô tả hành vi thực tế của hệ thống</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hành vi khi chưa xác thực</strong></td>
+              <td>Khi người dùng truy cập trực tiếp URL trang web tĩnh, hệ thống lập tức chặn lại và tự động chuyển hướng trình duyệt (Redirect) về trang Login trung tâm của Cloudflare Access.</td>
+            </tr>
+            <tr>
+              <td><strong>Hành vi khi xác thực sai / Không đủ quyền</strong></td>
+              <td>Nếu đăng nhập sai thông tin tài khoản Google/GitHub, lỗi hiển thị từ phía Identity Provider. Nếu đăng nhập thành công nhưng email không nằm trong danh sách được cấu hình ở Policy, Cloudflare sẽ hiển thị màn hình báo lỗi <strong>"Access Denied" (Mã 403)</strong>.</td>
+            </tr>
+            <tr>
+              <td><strong>Hành vi khi xác thực đúng</strong></td>
+              <td>Khi đăng nhập bằng tài khoản email hợp lệ, Cloudflare Access sẽ lưu một mã Token mã hóa vào Cookie trình duyệt và chuyển hướng người dùng quay trở lại website, hiển thị toàn bộ nội dung trang web một cách bình thường.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <section id="lab2-risk-analysis">
       <h3>4. Phân tích an toàn và rủi ro truy cập</h3>
       
       <h4>A. Website public hoàn toàn</h4>
@@ -124,118 +381,122 @@
       </ul>
 
       <h4>D. So sánh mô hình bảo mật</h4>
-      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th>Tiêu chí so sánh</th>
-            <th>Mô hình mạng truyền thống (Castle-and-Moat)</th>
-            <th>Mô hình Zero Trust trong Cloud</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Triết lý cốt lõi</strong></td>
-            <td>Tin tưởng tuyệt đối bất kỳ ai ở bên trong tường lửa (mạng nội bộ/VPN).</td>
-            <td>Không mặc định tin cậy bất kỳ ai. Mọi truy cập đều phải kiểm tra (Never Trust, Always Verify).</td>
-          </tr>
-          <tr>
-            <td><strong>Cơ chế xác thực</strong></td>
-            <td>Xác thực một lần duy nhất tại cửa ngõ perimeter để đi vào hệ thống.</td>
-            <td>Xác thực liên tục theo thời gian thực dựa trên ngữ cảnh cho mỗi yêu cầu truy cập.</td>
-          </tr>
-          <tr>
-            <td><strong>Độ an toàn thiết bị</strong></td>
-            <td>Mặc định thiết bị an toàn nếu nằm trong dải IP nội bộ.</td>
-            <td>Đánh giá nghiêm ngặt trạng thái an toàn của thiết bị trước khi cho phép kết nối tài nguyên.</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Tiêu chí so sánh</th>
+              <th>Mô hình mạng truyền thống (Castle-and-Moat)</th>
+              <th>Mô hình Zero Trust trong Cloud</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Triết lý cốt lõi</strong></td>
+              <td>Tin tưởng tuyệt đối bất kỳ ai ở bên trong tường lửa (mạng nội bộ/VPN).</td>
+              <td>Không mặc định tin cậy bất kỳ ai. Mọi truy cập đều phải kiểm tra (Never Trust, Always Verify).</td>
+            </tr>
+            <tr>
+              <td><strong>Cơ chế xác thực</strong></td>
+              <td>Xác thực một lần duy nhất tại cửa ngõ perimeter để đi vào hệ thống.</td>
+              <td>Xác thực liên tục theo thời gian thực dựa trên ngữ cảnh cho mỗi yêu cầu truy cập.</td>
+            </tr>
+            <tr>
+              <td><strong>Độ an toàn thiết bị</strong></td>
+              <td>Mặc định thiết bị an toàn nếu nằm trong dải IP nội bộ.</td>
+              <td>Đánh giá nghiêm ngặt trạng thái an toàn của thiết bị trước khi cho phép kết nối tài nguyên.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
-    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+    <hr>
 
     <section id="lab3-security">
       <h2>LAB 3: OWASP Juice Shop và Bảo mật ứng dụng Web</h2>
 
       <h3>1. Kiến thức cơ bản</h3>
       <p>
-        HTTPS là giao thức truyền tải siêu văn bản an toàn, sử dụng TLS để mã hóa dữ liệu giữa trình duyệt và máy chủ.
-        HTTP Security Headers giúp tăng cường khả năng bảo vệ ứng dụng web trước các cuộc tấn công như XSS, Clickjacking và Content Injection.
-        OWASP Top 10 là danh sách 10 nhóm lỗ hổng bảo mật phổ biến và nguy hiểm nhất đối với ứng dụng web.
+        HTTPS là giao thức truyền tải siêu văn bản an toàn, sử dụng TLS để mã hóa dữ liệu bảo mật giữa trình duyệt và máy chủ. 
+        HTTP Security Headers giúp tăng cường khả năng tự bảo vệ của ứng dụng web trước các hình thức tấn công nguy hiểm như XSS, Clickjacking và Content Injection. 
+        OWASP Top 10 là danh mục chuẩn hóa quốc tế liệt kê 10 nhóm lỗ hổng bảo mật phổ biến, nguy hiểm và có sức phá hoại lớn nhất đối với hệ thống ứng dụng web.
       </p>
 
       <h3>2. OWASP Juice Shop</h3>
       <p>
-        OWASP Juice Shop là ứng dụng web mô phỏng website thương mại điện tử được xây dựng cố ý chứa nhiều lỗ hổng bảo mật nhằm phục vụ việc học tập, nghiên cứu và thực hành kiểm thử an toàn thông tin.
+        OWASP Juice Shop là một ứng dụng web mã nguồn mở, mô phỏng website thương mại điện tử hiện đại nhưng được các chuyên gia xây dựng cố ý chứa nhiều lỗ hổng bảo mật nghiêm trọng khác nhau nhằm phục vụ mục đích học tập, nghiên cứu và thực hành kiểm thử an toàn thông tin một cách trực quan.
       </p>
 
       <h3>3. Các lỗ hổng phát hiện được</h3>
-      <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%; text-align: left; border-color: #ddd;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th>Lỗ hổng</th>
-            <th>Nhóm OWASP</th>
-            <th>Mức độ ảnh hưởng</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>SQL Injection</td>
-            <td>A03:2021 - Injection</td>
-            <td>Rất cao</td>
-          </tr>
-          <tr>
-            <td>Cross-Site Scripting (XSS)</td>
-            <td>A03:2021 - Injection</td>
-            <td>Cao</td>
-          </tr>
-          <tr>
-            <td>Broken Access Control</td>
-            <td>A01:2021 - Broken Access Control</td>
-            <td>Rất cao</td>
-          </tr>
-          <tr>
-            <td>Security Misconfiguration</td>
-            <td>A05:2021 - Security Misconfiguration</td>
-            <td>Cao</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Lỗ hổng</th>
+              <th>Nhóm OWASP</th>
+              <th>Mức độ ảnh hưởng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SQL Injection</strong></td>
+              <td>A03:2021 - Injection</td>
+              <td style="color: #ef4444; font-weight: bold;">Rất cao</td>
+            </tr>
+            <tr>
+              <td><strong>Cross-Site Scripting (XSS)</strong></td>
+              <td>A03:2021 - Injection</td>
+              <td style="color: #f97316; font-weight: bold;">Cao</td>
+            </tr>
+            <tr>
+              <td><strong>Broken Access Control</strong></td>
+              <td>A01:2021 - Broken Access Control</td>
+              <td style="color: #ef4444; font-weight: bold;">Rất cao</td>
+            </tr>
+            <tr>
+              <td><strong>Security Misconfiguration</strong></td>
+              <td>A05:2021 - Security Misconfiguration</td>
+              <td style="color: #f97316; font-weight: bold;">Cao</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h3>4. Triển khai OWASP Juice Shop Local</h3>
-      <pre>
-docker pull bkimminich/juice-shop
-docker run --rm -p 3000:3000 bkimminich/juice-shop
-      </pre>
+      <pre>docker pull bkimminich/juice-shop
+docker run --rm -p 3000:3000 bkimminich/juice-shop</pre>
       <p>
-        Sau khi triển khai thành công, ứng dụng được truy cập tại địa chỉ: <strong>http://localhost:3000</strong>
+        Sau khi container khởi chạy thành công, môi trường kiểm thử ứng dụng được truy cập tại địa chỉ cục bộ: <strong>http://localhost:3000</strong>
       </p>
 
       <h3>5. Giải pháp khắc phục</h3>
       <ul>
-        <li>Sử dụng Prepared Statement để chống SQL Injection.</li>
-        <li>Lọc dữ liệu đầu vào và áp dụng Content Security Policy để giảm thiểu XSS.</li>
-        <li>Áp dụng Role-Based Access Control (RBAC).</li>
-        <li>Bổ sung các HTTP Security Headers.</li>
-        <li>Triển khai HTTPS với TLS 1.2 hoặc TLS 1.3.</li>
+        <li>Sử dụng cơ chế <strong>Prepared Statement</strong> trong mã nguồn để chống triệt để lỗi SQL Injection.</li>
+        <li>Thực hiện lọc dữ liệu đầu vào nghiêm ngặt và áp dụng chính sách <strong>Content Security Policy (CSP)</strong> để giảm thiểu XSS.</li>
+        <li>Áp dụng mô hình kiểm soát truy cập dựa trên vai trò <strong>Role-Based Access Control (RBAC)</strong>.</li>
+        <li>Cấu hình bổ sung đầy đủ hệ thống các HTTP Security Headers bảo vệ Client-side.</li>
+        <li>Triển khai mã hóa kênh truyền HTTPS với giao thức bảo mật mã hóa mạnh TLS 1.2 hoặc TLS 1.3.</li>
       </ul>
 
       <h3>6. Liên hệ môi trường Cloud</h3>
       <p>
-        Nhóm đánh giá SQL Injection là lỗ hổng nguy hiểm nhất khi triển khai trên Cloud vì có thể dẫn đến rò rỉ dữ liệu người dùng, chiếm quyền quản trị và ảnh hưởng đến toàn bộ hệ thống.
+        Nhóm đánh giá <strong>SQL Injection</strong> là lỗ hổng an ninh nguy hiểm nhất khi triển khai hệ thống trên Cloud vì nó có thể trực tiếp dẫn đến việc rò rỉ toàn bộ cơ sở dữ liệu người dùng, chiếm đoạt trái phép quyền quản trị tối cao và làm tê liệt cục bộ toàn bộ kiến trúc hệ thống.
       </p>
       <p>
-        Các cơ chế bảo vệ như Web Application Firewall (WAF), Security Group, Logging và Monitoring giúp giảm thiểu nguy cơ khai thác nhưng không thể thay thế việc lập trình an toàn.
+        Mặc dù các cơ chế bảo vệ lớp mạng đám mây như Web Application Firewall (WAF), Security Group, Logging và Monitoring hỗ trợ giảm thiểu tối đa nguy cơ khai thác nhưng bản chất chúng không thể thay thế hoàn toàn tư duy lập trình an toàn ngay từ lớp mã nguồn gốc.
       </p>
 
       <h3>7. Mô hình Defense in Depth</h3>
-      <img src="images/defense-in-depth.png" alt="Defense in Depth" style="max-width:100%; border:1px solid #ccc;">
+      <div style="text-align: center; margin: 20px 0;">
+        <img src="images/defense-in-depth.png" alt="Defense in Depth" style="max-width:100%; border:1px solid var(--border-color); border-radius: 8px;">
+      </div>
       <p>
-        Mô hình Defense in Depth triển khai nhiều lớp bảo vệ bao gồm Perimeter Security, Network Security, Endpoint Security, Application Security và Data Security nhằm giảm thiểu rủi ro khi một lớp bảo vệ bị vượt qua.
+        Mô hình <strong>Defense in Depth (Phòng thủ chiều sâu)</strong> triển khai đồng bộ nhiều lớp bảo vệ độc lập bao gồm Perimeter Security, Network Security, Endpoint Security, Application Security và Data Security nhằm phân rã và triệt tiêu hoàn toàn rủi ro khi một lớp bảo vệ đơn lẻ bất ngờ bị kẻ tấn công vượt qua.
       </p>
     </section>
 
-    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+    <hr>
 
     <section id="lab4-monitoring">
       <h2>LAB 4: Monitoring, Logging và Security Visibility trên Cloud</h2>
@@ -279,36 +540,38 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
       </ul>
 
       <h3>6. Triển khai nội dung lên Web Lab - Mô hình trách nhiệm chung (Shared Responsibility)</h3>
-      <p>Khi triển khai giải pháp giám sát an toàn trên Điện toán đám mây, nhóm cần phân định rõ phạm vi theo mô hình phân chia trách nhiệm:</p>
+      <p style="margin-bottom: 15px;">Khi triển khai giải pháp giám sát an toàn trên Điện toán đám mây, nhóm cần phân định rõ phạm vi theo mô hình phân chia trách nhiệm:</p>
       
-      <table border="1" cellpadding="10" style="border-collapse: collapse; width:100%; text-align: left; border-color: #ddd;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th>Lớp Giám Sát trên Cloud</th>
-            <th>Phân định trách nhiệm ứng dụng thực tế vào Bài Lab</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Hạ tầng & Mạng (Physical / Infrastructure / Network)</strong></td>
-            <td><strong>Nhà cung cấp Cloud quản lý.</strong> Hỗ trợ sẵn các công cụ biên (như Cloudflare Analytics, AWS CloudWatch, VPC Flow Logs) giúp theo dõi phần cứng, mạng và chặn DDoS ở lớp biên.</td>
-          </tr>
-          <tr>
-            <td><strong>Ứng dụng & Dữ liệu (Application & Data)</strong></td>
-            <td><strong>Khách hàng (Sinh viên/Doanh nghiệp) tự chịu trách nhiệm hoàn toàn.</strong> Cloud không thể tự giám sát logic nghiệp vụ nội bộ hoặc dữ liệu đã mã hóa của ứng dụng web. Nhóm phải chủ động lập trình tạo log ứng dụng để theo dõi hành vi chi tiết.</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 35%;">Lớp Giám Sát trên Cloud</th>
+              <th>Phân định trách nhiệm ứng dụng thực tế vào Bài Lab</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hạ tầng & Mạng<br><small>(Physical / Infrastructure / Network)</small></strong></td>
+              <td><strong>Nhà cung cấp Cloud quản lý.</strong> Hỗ trợ sẵn các công cụ biên (như Cloudflare Analytics, AWS CloudWatch, VPC Flow Logs) giúp theo dõi phần cứng, mạng và chặn DDoS ở lớp biên.</td>
+            </tr>
+            <tr>
+              <td><strong>Ứng dụng & Dữ liệu<br><small>(Application & Data)</small></strong></td>
+              <td><strong>Khách hàng (Sinh viên/Doanh nghiệp) tự chịu trách nhiệm hoàn toàn.</strong> Cloud không thể tự giám sát logic nghiệp vụ nội bộ hoặc dữ liệu đã mã hóa của ứng dụng web. Nhóm phải chủ động lập trình tạo log ứng dụng để theo dõi hành vi chi tiết.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p><strong>Kết luận về Giai đoạn ứng phó sự cố (Incident Response):</strong></p>
-      <ul>
+      <ul style="margin-top: 10px;">
         <li><strong>Monitoring</strong> hỗ trợ phát hiện sự cố ở giai đoạn <strong>SỚM</strong> (ngay khi chỉ số hệ thống vừa vượt ngưỡng an toàn).</li>
         <li><strong>Logging</strong> đóng vai trò cốt lõi trong suốt quá trình <strong>Phản ứng sự cố (Incident Response)</strong> để khoanh vùng tài nguyên bị nhiễm độc, đưa ra chỉ dấu IP để chặn lập tức và hỗ trợ vá lỗ hổng code.</li>
         <li><strong>Sự khác biệt về thời gian phát hiện:</strong> Phát hiện sớm giúp xử lý trong vài phút, bảo vệ toàn vẹn dữ liệu và uy tín thương hiệu. Phát hiện muộn (sau nhiều ngày) dẫn đến việc hacker lấy sạch dữ liệu, thiệt hại tài chính lớn và có nguy cơ chịu các chế tài xử phạt pháp lý nặng nề.</li>
       </ul>
     </section>
 
-    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+    <hr>
 
     <section id="lab5-incident-response">
       <h2>LAB 5: Ứng phó sự cố & Tổng hợp kết quả toàn diện học phần</h2>
@@ -321,26 +584,21 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
 
       <h3>2. Phân tích chu trình Incident Response Lifecycle theo tiêu chuẩn NIST</h3>
       <p>Quy trình ứng phó sự cố được vận hành khép kín theo mô hình 4 giai đoạn cải tiến liên tục:</p>
-      
-      
 
-[Image of NIST Incident Response Lifecycle]
-
-      
-      <div class="timeline-container" style="margin-top: 15px;">
-        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+      <div class="timeline-container">
+        <div class="timeline-item">
           <strong>Giai đoạn 1: Preparation (Chuẩn bị)</strong><br>
           Cấu hình mã hóa, kích hoạt các HTTP Security Headers bảo vệ Client (Lab 1); Xây dựng chính sách IAM theo nguyên tắc đặc quyền tối thiểu và bật xác thực đa yếu tố MFA (Lab 2).
         </div>
-        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+        <div class="timeline-item">
           <strong>Giai đoạn 2: Detection & Analysis (Phát hiện & Phân tích)</strong><br>
           Cấu hình Dashboard giám sát tập trung để nhận diện các Metrics bất thường (CPU 100%, Egress traffic vọt cao) và truy vết tệp nhật ký văn bản để bóc tách dấu hiệu tấn công như chuỗi lệnh SQL Injection độc hại (Lab 4).
         </div>
-        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+        <div class="timeline-item">
           <strong>Giai đoạn 3: Containment, Eradication & Recovery (Kiểm soát, Đẩy lùi & Khôi phục)</strong><br>
           Chặn IP của tin tặc ngay tại lớp biên tường lửa WAF; Vá lỗ hổng mã nguồn ứng dụng bằng cách áp dụng <em>Prepared Statement</em> (Lab 3); Khôi phục cơ sở dữ liệu sạch từ bản sao lưu (Backup) để đưa hệ thống hoạt động trở lại.
         </div>
-        <div style="background: #eef5fc; padding: 15px; margin-bottom: 10px; border-left: 4px solid #0056b3;">
+        <div class="timeline-item">
           <strong>Giai đoạn 4: Post-Incident Activity (Hoạt động sau sự cố / Rút kinh nghiệm)</strong><br>
           Họp đánh giá nguyên nhân gốc rễ, rà soát lỗ hổng quy trình phản ứng nhanh và tiến hành cập nhật lại các kịch bản hành động chuẩn (Playbooks) phòng ngừa nguy cơ tái diễn.
         </div>
@@ -356,48 +614,50 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
       <h3>4. Bảng tổng hợp đánh giá kết quả thực hành (Từ Lab 1 đến Lab 5)</h3>
       <p>Xuyên suốt toàn bộ học phần, nhóm đã áp dụng và chứng minh tính thực tiễn của chiến lược <strong>Bảo vệ chiều sâu (Defense-in-Depth)</strong> qua từng bài Lab:</p>
       
-      <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left; border-color: #ddd;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th style="width: 15%;">Bài Lab</th>
-            <th style="width: 30%;">Nội dung & Dịch vụ áp dụng</th>
-            <th style="width: 25%;">Vị trí trong tầng bảo mật</th>
-            <th style="width: 30%;">Kết quả đạt được / Đánh giá</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>LAB 1</strong></td>
-            <td>Triển khai web tĩnh trên Cloudflare Pages, kiểm thử bằng Mozilla HTTP Observatory.</td>
-            <td>Perimeter Security (Bảo mật biên)</td>
-            <td>Cấu hình thành công HTTP Security Headers, đưa điểm bảo mật website lên mức tuyệt đối (A/A+), chống Clickjacking và XSS cơ bản.</td>
-          </tr>
-          <tr>
-            <td><strong>LAB 2</strong></td>
-            <td>Phân quyền tài khoản thông qua Cloud IAM, cấu hình chính sách Cloudflare Zero Trust.</td>
-            <td>Identity & Access Control (Kiểm soát truy cập)</td>
-            <td>Áp dụng nguyên tắc đặc quyền tối thiểu (Least Privilege), loại bỏ tư duy tin tưởng vị trí mạng truyền thống, bảo vệ tài nguyên lõi.</td>
-          </tr>
-          <tr>
-            <td><strong>LAB 3</strong></td>
-            <td>Nghiên cứu danh mục OWASP Top 10, cấu hình lỗi ứng dụng OWASP Juice Shop bằng Docker.</td>
-            <td>Application & Data Security (Ứng dụng & Dữ liệu)</td>
-            <td>Hiểu sâu bản chất tấn công phá hoại qua SQL Injection. Thành thạo giải pháp lập trình an toàn với <em>Prepared Statement</em>.</td>
-          </tr>
-          <tr>
-            <td><strong>LAB 4</strong></td>
-            <td>Phân tích Metrics và ghi nhật ký sự kiện dạng văn bản dựa trên Cloudflare Analytics.</td>
-            <td>Security Visibility & Auditing (Giám sát toàn diện)</td>
-            <td>Xây dựng thành công khả năng trực quan hóa đồ thị chỉ số và đọc log điều tra vết, loại bỏ mọi điểm mù trong vận hành hệ thống.</td>
-          </tr>
-          <tr>
-            <td><strong>LAB 5</strong></td>
-            <td>Tổng hợp kiến thức toàn chuỗi bảo vệ và giải quyết sự cố theo khung tiêu chuẩn NIST.</td>
-            <td>Incident Response & Recovery (Ứng phó & Phục hồi)</td>
-            <td>Hợp nhất các lớp bảo mật đơn lẻ thành một hệ thống tự thích ứng bền vững, nắm rõ ranh giới Mô hình trách nhiệm chia sẻ trên Cloud.</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 12%;">Bài Lab</th>
+              <th style="width: 30%;">Nội dung & Dịch vụ áp dụng</th>
+              <th style="width: 25%;">Vị trí trong tầng bảo mật</th>
+              <th>Kết quả đạt được / Đánh giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LAB 1</strong></td>
+              <td>Triển khai web tĩnh trên Cloudflare Pages, kiểm thử bằng Mozilla HTTP Observatory.</td>
+              <td>Perimeter Security<br><small>(Bảo mật biên)</small></td>
+              <td>Cấu hình thành công HTTP Security Headers, đưa điểm bảo mật website lên mức tuyệt đối (A/A+), chống Clickjacking và XSS cơ bản.</td>
+            </tr>
+            <tr>
+              <td><strong>LAB 2</strong></td>
+              <td>Phân quyền tài khoản thông qua Cloud IAM, cấu hình chính sách Cloudflare Zero Trust.</td>
+              <td>Identity & Access Control<br><small>(Kiểm soát truy cập)</small></td>
+              <td>Áp dụng nguyên tắc đặc quyền tối thiểu (Least Privilege), loại bỏ tư duy tin tưởng vị trí mạng truyền thống, bảo vệ tài nguyên lõi.</td>
+            </tr>
+            <tr>
+              <td><strong>LAB 3</strong></td>
+              <td>Nghiên cứu danh mục OWASP Top 10, cấu hình lỗi ứng dụng OWASP Juice Shop bằng Docker.</td>
+              <td>Application & Data Security<br><small>(Ứng dụng & Dữ liệu)</small></td>
+              <td>Hiểu sâu bản chất tấn công phá hoại qua SQL Injection. Thành thạo giải pháp lập trình an toàn với <em>Prepared Statement</em>.</td>
+            </tr>
+            <tr>
+              <td><strong>LAB 4</strong></td>
+              <td>Phân tích Metrics và ghi nhật ký sự kiện dạng văn bản dựa trên Cloudflare Analytics.</td>
+              <td>Security Visibility & Auditing<br><small>(Giám sát toàn diện)</small></td>
+              <td>Xây dựng thành công khả năng trực quan hóa đồ thị chỉ số và đọc log điều tra vết, loại bỏ mọi điểm mù trong vận hành hệ thống.</td>
+            </tr>
+            <tr>
+              <td><strong>LAB 5</strong></td>
+              <td>Tổng hợp kiến thức toàn chuỗi bảo vệ và giải quyết sự cố theo khung tiêu chuẩn NIST.</td>
+              <td>Incident Response & Recovery<br><small>(Ứng phó & Phục hồi)</small></td>
+              <td>Hợp nhất các lớp bảo mật đơn lẻ thành một hệ thống tự thích ứng bền vững, nắm rõ ranh giới Mô hình trách nhiệm chia sẻ trên Cloud.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h3>5. Báo cáo, đánh giá tổng kết học phần</h3>
       <ul>
@@ -406,16 +666,17 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
         <li><strong>Hướng phát triển tiếp theo:</strong> Để đáp ứng xu hướng bảo mật hiện đại, cần tiếp tục đẩy mạnh mô hình tự động hóa an ninh bằng cách đưa kiểm thử bảo mật vào quy trình phát triển phần mềm tự động (DevSecOps) và ứng dụng Trí tuệ nhân tạo (AI/Machine Learning) nhằm phân tích mã độc và log tự động theo thời gian thực.</li>
       </ul>
     </section>
-    <hr style="border: 1px solid #ddd; margin: 40px 0;">
+
+    <hr>
     
-    <section>
-      <h2>Liên hệ</h2>
-      <p>Email liên hệ: <a href="mailto:nhom@example.com">nhom@example.com</a></p>
+    <section style="text-align: center; background: transparent; border: 1px dashed var(--border-color);">
+      <h2 style="justify-content: center; border: none; padding: 0;">Liên hệ báo cáo</h2>
+      <p style="font-size: 1.1rem;">Email liên hệ nhóm: <a href="mailto:22004096@st.vlute.edu.vn">22004096@st.vlute.edu.vn</a></p>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 Nhóm - Website tĩnh demo mở rộng bảo mật Zero Trust</p>
+    <p>&copy; 2026 Nhóm - Website tĩnh thực hành và tổng hợp giải pháp bảo mật chiều sâu Cloud</p>
   </footer>
 </body>
 </html>
